@@ -134,7 +134,7 @@
     "@web/test-runner": "^0.13.12",
     "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.12.15",
+    "esbuild": "^0.13.2",
     "esbuild-loader": "^2.13.1",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^8.1.0",
