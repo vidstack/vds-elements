@@ -222,6 +222,9 @@ export class MediaKeyboardController extends MediaPlayerController {
 
       return combinations?.some((combo) => {
         const modifierKeys = new Set(combo.filter((key) => MODIFIER_KEYS.has(key)));
+        if ('<>'.includes(event.key)) {
+          modifierKeys.add('Shift');
+        }
 
         // Check whether a modifier key was pressed that's not part of this combination.
         for (const modKey of MODIFIER_KEYS) {
