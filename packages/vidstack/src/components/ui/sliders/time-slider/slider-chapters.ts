@@ -201,9 +201,9 @@ export class SliderChapters extends Component<SliderChaptersProps, {}, SliderCha
   }
 
   #watchPointerPercent() {
-    let { pointing, pointerPercent } = this.#sliderState;
+    let { hidden, pointerPercent } = this.#sliderState;
 
-    if (!pointing()) {
+    if (hidden()) {
       this.#activePointerIndex.set(-1);
       return;
     }
