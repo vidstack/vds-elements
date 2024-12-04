@@ -141,7 +141,7 @@ export class MediaKeyboardController extends MediaPlayerController {
       return;
     }
 
-    if (!method && isNumberPress) {
+    if (!method && isNumberPress && !modifierKeyPressed(event)) {
       event.preventDefault();
       event.stopPropagation();
       this.#media.remote.seek((this.$state.duration() / 10) * Number(event.key), event);
@@ -287,4 +287,13 @@ export class MediaKeyboardController extends MediaPlayerController {
 const SYMBOL_KEY_MAP = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
 function replaceSymbolKeys(key: string) {
   return key.replace(/Shift\+(\d)/g, (_, num) => SYMBOL_KEY_MAP[num - 1]);
+}
+
+function modifierKeyPressed(event: KeyboardEvent) {
+  for (const key of MODIFIER_KEYS) {
+    if (event[key.toLowerCase() + 'Key']) {
+      return true;
+    }
+  }
+  return false;
 }
