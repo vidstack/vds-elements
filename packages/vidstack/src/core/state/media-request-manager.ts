@@ -22,6 +22,7 @@ import { MediaPlayerController } from '../api/player-controller';
 import { boundTime } from '../api/player-state';
 import { MediaControls } from '../controls';
 import type { MediaStateManager } from './media-state-manager';
+import { prefersReducedMotion } from '../../utils/aria';
 
 /**
  * This class is responsible for listening to media request events and calling the appropriate
@@ -155,6 +156,7 @@ export class MediaRequestManager extends MediaPlayerController implements MediaR
     try {
       const provider = peek(this.#$provider);
       throwIfNotReadyForPlayback(provider, peek(canPlay));
+      throwIfAutoplayingWithReducedMotion(isAutoPlaying);
       return await provider!.play();
     } catch (error) {
       if (__DEV__) this.#logError('play request failed', error, trigger);
@@ -884,6 +886,15 @@ function throwIfFullscreenNotSupported(
     __DEV__
       ? `[vidstack] fullscreen is not currently available on target \`${target}\``
       : '[vidstack] no fullscreen support',
+  );
+}
+
+function throwIfAutoplayingWithReducedMotion(autoplaying: boolean) {
+  if (!prefersReducedMotion() || !autoplaying) return;
+  throw Error(
+    __DEV__
+      ? '[vidstack] autoplay is blocked due to user preference for reduced motion'
+      : '[vidstack] autoplay blocked',
   );
 }
 

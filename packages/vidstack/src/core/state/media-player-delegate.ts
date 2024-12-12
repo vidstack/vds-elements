@@ -156,7 +156,7 @@ export class MediaPlayerDelegate {
           ?.errorGroup('[vidstack] auto-play request failed')
           .labelledLog(
             'Message',
-            `Autoplay was requested but failed most likely due to browser autoplay policies.${muteMsg}`,
+            `Autoplay was requested but failed most likely due to browser autoplay policies or accessibility reasons.${muteMsg}`,
           )
           .labelledLog('Trigger Event', trigger)
           .labelledLog('Error', error)
