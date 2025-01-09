@@ -10,9 +10,17 @@ export const defaultLayoutProps: DefaultLayoutProps = {
   disableTimeSlider: false,
   menuContainer: null,
   menuGroup: 'bottom',
+  flatSettingsMenu: false,
   noAudioGain: false,
+  noAudioTracks: false,
+  noMediaLoop: false,
+  noMediaSpeed: false,
+  noMediaQuality: false,
   noGestures: false,
+  noAnnouncements: false,
   noKeyboardAnimations: false,
+  noCaptionStyles: false,
+  noCaptions: false,
   noModal: false,
   noScrubGesture: false,
   playbackRates: { min: 0, max: 2, step: 0.25 },
@@ -72,9 +80,29 @@ export interface DefaultLayoutProps {
    */
   menuGroup: 'top' | 'bottom';
   /**
+   * Do not split settings menu into submenus
+   */
+  flatSettingsMenu: boolean;
+  /**
    * Disable audio boost slider in the settings menu.
    */
   noAudioGain: boolean;
+  /**
+   * Disable audio tracks in the settings menu.
+   */
+  noAudioTracks: boolean;
+  /**
+   * Disable loop switch in the settings menu.
+   */
+  noMediaLoop: boolean;
+  /**
+   * Disable media speed slider in the settings menu.
+   */
+  noMediaSpeed: boolean;
+  /**
+   * Disable media quality slider in the settings menu.
+   */
+  noMediaQuality: boolean;
   /**
    * Whether modal menus should be disabled when the small layout is active. A modal menu is
    * a floating panel that floats up from the bottom of the screen (outside of the player). It's
@@ -98,9 +126,21 @@ export interface DefaultLayoutProps {
    */
   noGestures: boolean;
   /**
+   * Whether announcements should not be displayed.
+   */
+  noAnnouncements: boolean;
+  /**
    * Whether keyboard actions should not be displayed.
    */
   noKeyboardAnimations: boolean;
+  /**
+   * Whether caption styles should not be displayed.
+   */
+  noCaptionStyles: boolean;
+  /**
+   * Whether captions should not be displayed.
+   */
+  noCaptions: boolean;
   /**
    * Whether the bitrate should be hidden in the settings quality hint.
    *

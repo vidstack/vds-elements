@@ -14,7 +14,29 @@ import { DefaultMenuSliderItem, DefaultSliderParts, DefaultSliderSteps } from '.
 
 export function DefaultPlaybackMenu() {
   return $signal(() => {
-    const { translations } = useDefaultLayoutContext();
+    const { flatSettingsMenu, noMediaLoop, noMediaSpeed, noMediaQuality, translations } =
+      useDefaultLayoutContext();
+
+    const items: any[] = [];
+
+    if (!noMediaLoop()) {
+      items.push(
+        DefaultMenuSection({
+          children: DefaultLoopCheckbox(),
+        }),
+      );
+    }
+    if (!noMediaSpeed()) {
+      items.push(DefaultSpeedMenuSection());
+    }
+    if (!noMediaQuality()) {
+      items.push(DefaultQualityMenuSection());
+    }
+
+    if (!items.length) return null;
+
+    if (flatSettingsMenu()) return items;
+
     return html`
       <media-menu class="vds-playback-menu vds-menu">
         ${DefaultMenuButton({
@@ -22,13 +44,7 @@ export function DefaultPlaybackMenu() {
           icon: 'menu-playback',
         })}
         <media-menu-items class="vds-menu-items">
-          ${[
-            DefaultMenuSection({
-              children: DefaultLoopCheckbox(),
-            }),
-            DefaultSpeedMenuSection(),
-            DefaultQualityMenuSection(),
-          ]}
+          ${items}
         </media-menu-items>
       </media-menu>
     `;

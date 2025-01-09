@@ -12,7 +12,8 @@ import { DefaultMenuSliderItem, DefaultSliderParts, DefaultSliderSteps } from '.
 
 export function DefaultAudioMenu() {
   return $signal(() => {
-    const { noAudioGain, translations } = useDefaultLayoutContext(),
+    const { flatSettingsMenu, noAudioGain, noAudioTracks, translations } =
+        useDefaultLayoutContext(),
       { audioTracks, canSetAudioGain } = useMediaState(),
       $disabled = computed(() => {
         const hasGainSlider = canSetAudioGain() && !noAudioGain();
@@ -21,15 +22,33 @@ export function DefaultAudioMenu() {
 
     if ($disabled()) return null;
 
+    const items: any[] = [];
+    if (!noAudioGain()) {
+      items.push(DefaultAudioBoostSection());
+    }
+    if (!noAudioTracks()) {
+      items.push(DefaultAudioTracksMenu());
+    }
+
+    if (!items.length) {
+      return null;
+    }
+
+    if (flatSettingsMenu())
+      return [
+        DefaultMenuSection({
+          label: i18n(translations, 'Audio'),
+          children: items,
+        }),
+      ];
+
     return html`
       <media-menu class="vds-audio-menu vds-menu">
         ${DefaultMenuButton({
           label: () => i18n(translations, 'Audio'),
           icon: 'menu-audio',
         })}
-        <media-menu-items class="vds-menu-items">
-          ${[DefaultAudioTracksMenu(), DefaultAudioBoostSection()]}
-        </media-menu-items>
+        <media-menu-items class="vds-menu-items"> ${items} </media-menu-items>
       </media-menu>
     `;
   });
@@ -119,13 +138,13 @@ function DefaultAudioGainSlider() {
 function getGainMin() {
   const { audioGains } = useDefaultLayoutContext(),
     gains = audioGains();
-  return isArray(gains) ? gains[0] ?? 0 : gains.min;
+  return isArray(gains) ? (gains[0] ?? 0) : gains.min;
 }
 
 function getGainMax() {
   const { audioGains } = useDefaultLayoutContext(),
     gains = audioGains();
-  return isArray(gains) ? gains[gains.length - 1] ?? 300 : gains.max;
+  return isArray(gains) ? (gains[gains.length - 1] ?? 300) : gains.max;
 }
 
 function getGainStep() {

@@ -12,26 +12,72 @@ import { DefaultMenuButton, DefaultMenuItem, DefaultMenuSection } from './items/
 
 export function DefaultAccessibilityMenu() {
   return $signal(() => {
-    const { translations } = useDefaultLayoutContext();
+    const {
+      flatSettingsMenu,
+      noAnnouncements,
+      noKeyboardAnimations,
+      noCaptionStyles,
+      translations,
+    } = useDefaultLayoutContext();
+
+    if (flatSettingsMenu()) {
+      const items: any[] = [];
+      if (!noAnnouncements()) {
+        items.push(DefaultAnnouncementsMenuCheckbox());
+      }
+      if (!noKeyboardAnimations()) {
+        items.push(DefaultKeyboardAnimationsMenuCheckbox());
+      }
+      if (!noCaptionStyles()) {
+        items.push(DefaultFontMenu());
+      }
+
+      return items.length
+        ? DefaultMenuSection({
+            label: i18n(translations, 'Accessibility'),
+            children: items,
+          })
+        : null;
+    }
+
+    const items: any[] = [];
+    const topItems: any[] = [];
+    const bottomItems: any[] = [];
+
+    if (!noAnnouncements()) {
+      topItems.push(DefaultAnnouncementsMenuCheckbox());
+    }
+    if (!noKeyboardAnimations()) {
+      topItems.push(DefaultKeyboardAnimationsMenuCheckbox());
+    }
+    if (!noCaptionStyles()) {
+      bottomItems.push(DefaultFontMenu());
+    }
+
+    if (topItems.length) {
+      items.push(
+        DefaultMenuSection({
+          children: topItems,
+        }),
+      );
+    }
+    if (bottomItems.length) {
+      items.push(
+        DefaultMenuSection({
+          children: bottomItems,
+        }),
+      );
+    }
+
+    if (!items.length) return null;
+
     return html`
       <media-menu class="vds-accessibility-menu vds-menu">
         ${DefaultMenuButton({
           label: () => i18n(translations, 'Accessibility'),
           icon: 'menu-accessibility',
         })}
-        <media-menu-items class="vds-menu-items">
-          ${[
-            DefaultMenuSection({
-              children: [
-                DefaultAnnouncementsMenuCheckbox(),
-                DefaultKeyboardAnimationsMenuCheckbox(),
-              ],
-            }),
-            DefaultMenuSection({
-              children: [DefaultFontMenu()],
-            }),
-          ]}
-        </media-menu-items>
+        <media-menu-items class="vds-menu-items"> ${items} </media-menu-items>
       </media-menu>
     `;
   });

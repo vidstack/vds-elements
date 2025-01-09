@@ -32,6 +32,7 @@ export function DefaultSettingsMenu({
         menuPortal,
         noModal,
         menuGroup,
+        flatSettingsMenu,
         smallWhen: smWhen,
       } = useDefaultLayoutContext(),
       $placement = computed(() =>
@@ -57,6 +58,7 @@ export function DefaultSettingsMenu({
         class="vds-settings-menu-items vds-menu-items"
         placement=${$signal($placement)}
         offset=${$signal($offset)}
+        flat="${flatSettingsMenu()}"
       >
         ${$signal(() => {
           if (!$isOpen()) {

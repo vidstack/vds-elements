@@ -519,6 +519,8 @@ export class Menu extends Component<MenuProps, {}, MenuEvents> {
   #onResize = animationFrameThrottle(() => {
     const content = peek(this.#content);
     if (!content || __SERVER__) return;
+    // Disable resize for flatSettingsMenu because it works wrong with DefaultFontMenu()
+    if (content.getAttribute('flat') == 'true') return;
 
     let height = 0,
       styles = getComputedStyle(content),
