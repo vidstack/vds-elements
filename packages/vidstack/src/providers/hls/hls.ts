@@ -56,6 +56,10 @@ export class HLSController {
     });
 
     this.#instance.attachMedia(this.#video);
+
+    // Enable remote playback for AirPlay 
+    this.#video.disableRemotePlayback = false;
+
     this.#instance.on(ctor.Events.AUDIO_TRACK_SWITCHED, this.#onAudioSwitch.bind(this));
     this.#instance.on(ctor.Events.LEVEL_SWITCHED, this.#onLevelSwitched.bind(this));
     this.#instance.on(ctor.Events.LEVEL_LOADED, this.#onLevelLoaded.bind(this));
